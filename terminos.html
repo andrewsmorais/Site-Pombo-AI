@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Términos de Uso · Pombo AI</title>
+<meta name="description" content="Términos y condiciones de uso de la app Pombo AI.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0a'/%3E%3Cpath d='M5 21c0-6 5-10 11-10 2-4 7-5 9-2l3 1-3 1c0 7-5 12-12 12H3l2-2z' fill='%23ffffff'/%3E%3C/svg%3E">
+<style>
+:root{--accent:#2563eb;--accent-soft:rgba(37,99,235,.1);--bg:#ffffff;--bg-2:#f8fafc;--card:#ffffff;--card-2:#f1f5f9;--line:#e5e7eb;--text:#0a0a0a;--muted:#525a66;--dim:#8a93a0}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 20px}
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{max-width:1160px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+.logo svg{width:30px;height:30px}
+.logo b{color:var(--accent)}
+.back{font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.back:hover{color:var(--accent)}
+
+.hero{text-align:center;padding:64px 0 40px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;left:50%;top:0;width:600px;height:360px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(37,99,235,.16),transparent 65%);pointer-events:none}
+.hero .ic{width:64px;height:64px;border-radius:18px;background:var(--accent-soft);border:1px solid rgba(37,99,235,.3);display:grid;place-items:center;margin:0 auto 20px;color:var(--accent);position:relative}
+.hero h1{font-size:clamp(2rem,6vw,3rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:12px;position:relative}
+.hero p{color:var(--muted);max-width:520px;margin:0 auto;position:relative}
+
+.cards{display:grid;gap:14px;margin-bottom:56px}
+.card{background:var(--card);border:1px solid var(--line);box-shadow:0 10px 28px -20px rgba(15,23,42,.3);border-radius:18px;padding:22px;display:flex;gap:14px;align-items:flex-start;transition:border-color .2s,transform .2s}
+.card:hover{border-color:rgba(37,99,235,.5);transform:translateY(-2px)}
+.card .i{width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none;font-size:20px}
+.card h3{font-size:1rem;margin-bottom:3px}
+.card p{color:var(--muted);font-size:.9rem}
+.card .link{color:var(--accent);font-weight:700;font-size:.9rem;display:inline-block;margin-top:6px;word-break:break-all}
+
+h2{font-size:1.5rem;letter-spacing:-.02em;margin-bottom:18px}
+.faq{display:flex;flex-direction:column;gap:10px;margin-bottom:64px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+details[open]{border-color:rgba(37,99,235,.45)}
+summary{cursor:pointer;list-style:none;padding:18px 52px 18px 20px;font-weight:600;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:8px;background:var(--card-2);display:grid;place-items:center;color:var(--accent);font-size:1.1rem;transition:transform .2s}
+details[open] summary::after{content:"−"}
+details .a{padding:0 20px 18px;color:var(--muted);font-size:.95rem}
+details .a p+p{margin-top:8px}
+
+.contact{background:#0a0a0a;color:#fff;border:0;border-radius:22px;padding:32px 24px;text-align:center;margin-bottom:72px}
+.contact h2{margin-bottom:8px}
+.contact p{color:#a3a3a3;margin-bottom:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#ffffff;font-weight:800;padding:13px 24px;border-radius:12px;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(37,99,235,.35)}
+.contact small{display:block;color:#8a8a8a;margin-top:14px;font-size:.84rem}
+
+footer{background:#fafafa;border-top:1px solid var(--line);padding:28px 0}
+footer .wrap{max-width:1160px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;color:var(--dim);font-size:.84rem}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--accent)}
+
+@media (min-width:640px){.cards{grid-template-columns:repeat(3,1fr)}.card{flex-direction:column}}
+@media (min-width:900px){footer .wrap{flex-direction:row;justify-content:space-between}}
+
+.legal{padding:56px 0 80px}
+.legal .upd{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:.8rem;padding:5px 12px;border-radius:999px;margin-bottom:16px}
+.legal h1{font-size:clamp(2rem,6vw,2.8rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:14px}
+.legal .intro{color:var(--muted);font-size:1.05rem;margin-bottom:36px}
+.legal nav.toc{background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:18px 22px;margin-bottom:40px}
+.legal nav.toc b{display:block;margin-bottom:8px;font-size:.9rem}
+.legal nav.toc ol{padding-left:20px;color:var(--muted);font-size:.92rem;columns:2;column-gap:28px}
+.legal nav.toc a:hover{color:var(--accent)}
+.legal h2{font-size:1.3rem;margin:40px 0 12px;scroll-margin-top:84px}
+.legal p,.legal li{color:#333a44;font-size:.98rem}
+.legal p+p{margin-top:10px}
+.legal ul{padding-left:22px;margin:10px 0}
+.legal li{margin:6px 0}
+.legal a{color:var(--accent);font-weight:600}
+.legal .box{background:#0a0a0a;color:#fff;border-radius:18px;padding:24px;margin-top:44px}
+.legal .box p{color:#d4d4d4}
+.legal .box a{color:#60a5fa}
+@media (max-width:600px){.legal nav.toc ol{columns:1}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="pombo" viewBox="0 0 32 32"><path d="M5 21c0-6 5-10 11-10 2-4 7-5 9-2l3 1-3 1c0 7-5 12-12 12H3l2-2z" fill="#0a0a0a"/><path d="M10 18c3 0 7 1 9 4-4 1-8 0-9-4z" fill="#2563eb"/><circle cx="23.6" cy="10.4" r="1.15" fill="#ffffff"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo" aria-label="Pombo AI inicio"><svg><use href="#pombo"/></svg>Pombo <b>AI</b></a>
+    <a href="index.html" class="back">← Volver al inicio</a>
+  </div>
+</header>
+
+<main>
+  <article class="legal">
+    <div class="wrap">
+      <span class="upd">Última actualización: 27 de octubre de 2026</span>
+      <h1>Términos de Uso</h1>
+      <p class="intro">Estos términos regulan el uso de la app Pombo AI y de este sitio web. Al crear una cuenta o usar la app, aceptas estas condiciones.</p>
+      <nav class="toc" aria-label="Índice"><b>Contenido</b><ol><li><a href="#s1">El servicio</a></li><li><a href="#s2">No es consejo médico</a></li><li><a href="#s3">Tu cuenta</a></li><li><a href="#s4">Suscripciones y pagos</a></li><li><a href="#s5">Uso aceptable</a></li><li><a href="#s6">Propiedad intelectual</a></li><li><a href="#s7">Exactitud de las estimaciones</a></li><li><a href="#s8">Responsabilidad</a></li><li><a href="#s9">Cancelación de la cuenta</a></li><li><a href="#s10">Cambios y ley aplicable</a></li><li><a href="#s11">Contacto</a></li></ol></nav>
+      <h2 id="s1">1. El servicio</h2><p>Pombo AI es una app de seguimiento nutricional que usa inteligencia artificial para estimar las calorías y los macronutrientes de tus comidas a partir de fotos, voz, texto, códigos de barras y etiquetas, y para ayudarte a seguir tus objetivos de peso y alimentación.</p><h2 id="s2">2. No es consejo médico</h2><p>La información que ofrece Pombo AI es orientativa y se basa en estimaciones. No sustituye el diagnóstico, el tratamiento ni el consejo de un médico, dietista-nutricionista u otro profesional sanitario. Consulta con un profesional antes de cambiar tu dieta, sobre todo si estás embarazada, tienes una condición médica o tomas medicación.</p><h2 id="s3">3. Tu cuenta</h2><p>Debes tener al menos 16 años para usar la app. Eres responsable de mantener la seguridad de tu cuenta y de que los datos que introduces sean correctos.</p><h2 id="s4">4. Suscripciones y pagos</h2><ul><li>Algunas funciones requieren una suscripción de pago, que se gestiona a través de Apple App Store o Google Play.</li><li>La suscripción se renueva automáticamente salvo que la canceles al menos 24 horas antes del final del periodo en curso.</li><li>Puedes cancelarla en cualquier momento desde los ajustes de tu cuenta de Apple o Google. Desinstalar la app no la cancela.</li><li>Si hay un periodo de prueba gratuito, la parte no utilizada se pierde al contratar la suscripción.</li><li>Los reembolsos se rigen por las políticas de Apple y Google.</li></ul><h2 id="s5">5. Uso aceptable</h2><p>No puedes usar la app de forma ilegal, intentar acceder sin autorización a nuestros sistemas, copiar o revender el servicio, ni subir contenido que no sea tuyo o que infrinja derechos de terceros.</p><h2 id="s6">6. Propiedad intelectual</h2><p>La app, la marca Pombo AI, el diseño y el software nos pertenecen. Te concedemos una licencia personal, no exclusiva e intransferible para usar la app. Las fotos y datos que subes siguen siendo tuyos; nos das permiso para tratarlos solo para prestarte el servicio, tal y como se explica en la <a href="privacidad.html">Política de Privacidad</a>.</p><h2 id="s7">7. Exactitud de las estimaciones</h2><p>Trabajamos para que las estimaciones sean lo más precisas posible, pero pueden contener errores. Puedes revisar y editar cualquier registro. No garantizamos resultados concretos de pérdida o ganancia de peso.</p><h2 id="s8">8. Responsabilidad</h2><p>En la medida permitida por la ley, Pombo AI no será responsable de daños indirectos derivados del uso de la app. Nada en estos términos limita los derechos que te reconoce la normativa de protección de los consumidores.</p><h2 id="s9">9. Cancelación de la cuenta</h2><p>Puedes eliminar tu cuenta en cualquier momento desde Ajustes → Cuenta → Eliminar cuenta. Podemos suspender cuentas que incumplan estos términos.</p><h2 id="s10">10. Cambios y ley aplicable</h2><p>Podemos modificar estos términos y te avisaremos de los cambios importantes. Estos términos se rigen por la legislación española, sin perjuicio de los derechos que te correspondan como consumidor en tu país de residencia.</p><h2 id="s11">11. Contacto</h2><p>Para cualquier duda sobre estos términos, escríbenos a <a href="mailto:suporte@pomboai.app">suporte@pomboai.app</a>.</p>
+      <div class="box"><p>¿Tienes dudas sobre este documento? Escríbenos a <a href="mailto:suporte@pomboai.app">suporte@pomboai.app</a> y te responderemos en menos de 48 horas laborables.</p></div>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Pombo AI. Todos los derechos reservados.</span>
+    <nav><a href="index.html">Inicio</a><a href="privacidad.html">Privacidad</a><a href="terminos.html">Términos</a><a href="mailto:suporte@pomboai.app">suporte@pomboai.app</a></nav>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+// Abre la pregunta si se llega con #ancla
+(function(){var h=location.hash&&document.querySelector(location.hash);if(h&&h.tagName==='DETAILS')h.open=true;
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){var t=document.querySelector(a.getAttribute('href'));if(t&&t.tagName==='DETAILS')t.open=true})})})();
+</script>
+</body>
+</html>
