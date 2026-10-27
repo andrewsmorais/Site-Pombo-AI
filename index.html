@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pombo AI · Cuenta calorías con una foto</title>
+<meta name="description" content="Pombo AI cuenta las calorías y macros de tu comida con solo una foto. Escáner IA, diario alimentario y seguimiento de peso. Disponible en iOS y Android.">
+<meta name="theme-color" content="#0f172a">
+<meta property="og:title" content="Pombo AI · Cuenta calorías con una foto">
+<meta property="og:description" content="Haz una foto a tu plato y la IA calcula calorías y macros al instante.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f172a'/%3E%3Cpath d='M5 21c0-6 5-10 11-10 2-4 7-5 9-2l3 1-3 1c0 7-5 12-12 12H3l2-2z' fill='%2322c55e'/%3E%3C/svg%3E">
+<style>
+:root{
+  --green:#22c55e;--green-d:#16a34a;--green-soft:rgba(34,197,94,.12);
+  --bg:#0f172a;--bg-2:#0b1222;--card:#1e293b;--card-2:#263347;--line:#334155;
+  --text:#f1f5f9;--muted:#94a3b8;--dim:#64748b;
+  --orange:#fb923c;--blue:#60a5fa;--yellow:#facc15;--pink:#f472b6;
+  --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--text);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img,svg{display:block}
+.wrap{width:100%;max-width:1160px;margin:0 auto;padding:0 20px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:rgba(15,23,42,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(51,65,85,.6)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+.logo svg{width:30px;height:30px}
+.logo b{color:var(--green);font-weight:800}
+.nav-links{display:none;gap:30px;font-size:.92rem;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{display:none;gap:8px}
+.burger{background:none;border:0;color:var(--text);width:40px;height:40px;display:grid;place-items:center;cursor:pointer;border-radius:10px}
+.burger:hover{background:var(--card)}
+.mobile-menu{display:none;flex-direction:column;padding:8px 20px 20px;gap:4px;border-top:1px solid var(--line)}
+.mobile-menu.open{display:flex}
+.mobile-menu a{padding:12px 4px;color:var(--muted);border-bottom:1px solid rgba(51,65,85,.5)}
+
+/* STORE BUTTONS */
+.stores{display:flex;flex-wrap:wrap;gap:12px}
+.store{display:inline-flex;align-items:center;gap:10px;background:#000;color:#fff;border:1px solid #2b3446;border-radius:12px;padding:9px 18px 9px 14px;transition:transform .15s,border-color .15s}
+.store:hover{transform:translateY(-2px);border-color:var(--green)}
+.store svg{width:24px;height:24px;flex:none}
+.store small{display:block;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;opacity:.75;line-height:1.1}
+.store strong{display:block;font-size:1.05rem;line-height:1.15;font-weight:700}
+.store.sm{padding:6px 12px 6px 10px;border-radius:9px}
+.store.sm svg{width:17px;height:17px}
+.store.sm strong{font-size:.8rem}
+.store.sm small{font-size:.5rem}
+
+/* HERO */
+.hero{position:relative;padding:56px 0 80px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-30% -20% auto auto;width:640px;height:640px;background:radial-gradient(circle,rgba(34,197,94,.18),transparent 65%);pointer-events:none}
+.hero .wrap{display:grid;gap:56px;align-items:center;position:relative}
+.badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-soft);color:var(--green);border:1px solid rgba(34,197,94,.3);font-size:.78rem;font-weight:700;padding:6px 13px;border-radius:999px}
+.badge i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(34,197,94,.2);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(34,197,94,0)}}
+.hero h1{font-size:clamp(2.3rem,7vw,4rem);line-height:1.05;letter-spacing:-.035em;font-weight:800;margin:22px 0 20px}
+.hero h1 span{display:block}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p.lead{color:var(--muted);font-size:1.08rem;max-width:500px;margin-bottom:30px}
+.hero-meta{display:flex;align-items:center;gap:14px;margin-top:28px;color:var(--muted);font-size:.86rem}
+.avatars{display:flex}
+.avatars span{width:32px;height:32px;border-radius:50%;border:2px solid var(--bg);margin-left:-8px;display:grid;place-items:center;font-size:.7rem;font-weight:700;color:#0f172a}
+.avatars span:first-child{margin-left:0}
+.stars{color:var(--yellow);letter-spacing:2px}
+
+/* PHONE MOCKUP */
+.phone{width:280px;height:572px;margin:0 auto;background:#020617;border-radius:46px;padding:11px;box-shadow:0 0 0 2px #334155,0 40px 80px -20px rgba(0,0,0,.7),0 0 120px -30px rgba(34,197,94,.35);position:relative}
+.phone::before{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);width:84px;height:24px;background:#020617;border-radius:20px;z-index:3}
+.screen{width:100%;height:100%;background:#0b1222;border-radius:36px;overflow:hidden;position:relative;padding:50px 16px 0;font-size:11px}
+.scr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.scr-top .logo{font-size:.85rem;gap:5px}
+.scr-top .logo svg{width:18px;height:18px}
+.streak{display:flex;align-items:center;gap:3px;background:var(--card);padding:3px 8px;border-radius:999px;font-weight:700;font-size:10px}
+.days{display:flex;justify-content:space-between;margin-bottom:12px}
+.day{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--dim);font-size:9px}
+.day b{width:26px;height:26px;border-radius:50%;border:1.5px dashed var(--line);display:grid;place-items:center;font-size:9px;color:var(--muted)}
+.day.done b{border:1.5px solid var(--green);color:var(--green)}
+.day.today b{background:var(--green);color:#052e16;border-color:var(--green)}
+.ring-card{background:var(--card);border-radius:20px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.ring{position:relative;width:96px;height:96px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .num strong{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.ring .num small{font-size:8px;color:var(--muted)}
+.ring-info div{margin-bottom:6px}
+.ring-info small{display:block;color:var(--muted);font-size:9px}
+.ring-info b{font-size:12px}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.macro{background:var(--card);border-radius:14px;padding:9px 8px}
+.macro small{color:var(--muted);font-size:8.5px;display:block}
+.macro b{font-size:11px}
+.macro b span{color:var(--dim);font-weight:500}
+.bar{height:4px;background:var(--line);border-radius:4px;margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+.sec-label{display:flex;justify-content:space-between;font-weight:700;font-size:11px;margin-bottom:7px}
+.sec-label span{color:var(--green);font-weight:600;font-size:9.5px}
+.meal{display:flex;align-items:center;gap:9px;background:var(--card);border-radius:14px;padding:8px;margin-bottom:6px}
+.meal .thumb{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:18px;flex:none}
+.meal div{flex:1;min-width:0}
+.meal b{display:block;font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meal small{color:var(--muted);font-size:8.5px}
+.meal .kc{font-weight:800;font-size:10.5px;color:var(--orange)}
+.fab{position:absolute;right:16px;bottom:62px;background:var(--green);color:#052e16;font-weight:800;font-size:10px;padding:9px 13px;border-radius:999px;box-shadow:0 8px 20px rgba(34,197,94,.45)}
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:52px;background:#0f172a;border-top:1px solid var(--card);display:flex;justify-content:space-around;align-items:center}
+.tabbar i{width:18px;height:18px;border-radius:6px;background:var(--line);opacity:.6}
+.tabbar i.on{background:var(--green);opacity:1}
+
+.hero-phone{position:relative}
+.float{position:absolute;background:rgba(30,41,59,.92);border:1px solid var(--line);backdrop-filter:blur(8px);border-radius:14px;padding:10px 13px;font-size:.78rem;display:flex;align-items:center;gap:9px;box-shadow:0 14px 30px rgba(0,0,0,.4);animation:bob 5s ease-in-out infinite;z-index:4}
+.float b{display:block;font-size:.84rem}
+.float small{color:var(--muted)}
+.float .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--green-soft);font-size:16px}
+.float.f1{top:90px;left:-4px}
+.float.f2{bottom:130px;right:-4px;animation-delay:-2.5s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+
+/* SECTIONS */
+section{padding:88px 0}
+.head{text-align:center;max-width:640px;margin:0 auto 52px}
+.head .eyebrow{color:var(--green);font-weight:700;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px}
+.head h2{font-size:clamp(1.8rem,4.5vw,2.6rem);line-height:1.1;letter-spacing:-.03em;font-weight:800;margin-bottom:12px}
+.head p{color:var(--muted)}
+
+/* HOW */
+.how{background:var(--bg-2)}
+.steps{display:grid;gap:18px;position:relative}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:32px 26px;text-align:center;position:relative;transition:transform .2s,border-color .2s}
+.step:hover{transform:translateY(-4px);border-color:rgba(34,197,94,.5)}
+.step .num{position:absolute;top:16px;left:18px;font-size:.75rem;font-weight:800;color:var(--dim)}
+.step .ic{width:62px;height:62px;border-radius:50%;background:var(--green-soft);color:var(--green);display:grid;place-items:center;margin:0 auto 20px;border:1px solid rgba(34,197,94,.25)}
+.step .ic svg{width:28px;height:28px}
+.step h3{font-size:1.12rem;margin-bottom:8px}
+.step p{color:var(--muted);font-size:.93rem}
+
+/* TESTIMONIALS */
+.tgrid{display:grid;gap:18px}
+.tcard{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;gap:14px}
+.tuser{display:flex;align-items:center;gap:12px}
+.av{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#0f172a;flex:none;position:relative}
+.av::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--green);opacity:.6}
+.tuser b{display:block}
+.tuser small{color:var(--muted);font-size:.82rem}
+.tcard blockquote{color:#cbd5e1;font-size:.97rem}
+.tresult{margin-top:auto;display:inline-flex;align-self:flex-start;gap:6px;align-items:center;background:var(--green-soft);color:var(--green);font-size:.78rem;font-weight:700;padding:5px 10px;border-radius:999px}
+
+/* FEATURES */
+.features{background:var(--bg-2)}
+.fgrid{display:grid;gap:48px;align-items:center}
+.flist{display:flex;flex-direction:column;gap:8px}
+.fitem{display:flex;gap:16px;padding:18px;border-radius:16px;border:1px solid transparent;cursor:pointer;text-align:left;background:none;color:inherit;font:inherit;transition:background .2s,border-color .2s}
+.fitem:hover{background:rgba(30,41,59,.5)}
+.fitem.active{background:var(--card);border-color:rgba(34,197,94,.45);box-shadow:0 12px 30px -12px rgba(0,0,0,.5)}
+.fitem .ic{width:44px;height:44px;border-radius:12px;background:var(--card-2);color:var(--muted);display:grid;place-items:center;flex:none;transition:.2s}
+.fitem.active .ic{background:var(--green-soft);color:var(--green)}
+.fitem .ic svg{width:22px;height:22px}
+.fitem h3{font-size:1.02rem;margin-bottom:4px;color:var(--muted);transition:color .2s}
+.fitem.active h3{color:var(--text)}
+.fitem p{color:var(--dim);font-size:.9rem}
+.fitem.active p{color:var(--muted)}
+.fscreen{display:none;animation:fade .35s ease}
+.fscreen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.scr-title{font-size:15px;font-weight:800;margin-bottom:12px}
+/* scanner */
+.cam{height:250px;border-radius:20px;background:radial-gradient(circle at 50% 45%,#3b2a1a,#111827 70%);position:relative;overflow:hidden;display:grid;place-items:center;margin-bottom:10px}
+.cam .plate{font-size:84px;filter:drop-shadow(0 10px 20px rgba(0,0,0,.6))}
+.cam .corner{position:absolute;width:26px;height:26px;border:3px solid var(--green)}
+.cam .c1{top:18px;left:18px;border-right:0;border-bottom:0;border-radius:8px 0 0 0}
+.cam .c2{top:18px;right:18px;border-left:0;border-bottom:0;border-radius:0 8px 0 0}
+.cam .c3{bottom:18px;left:18px;border-right:0;border-top:0;border-radius:0 0 0 8px}
+.cam .c4{bottom:18px;right:18px;border-left:0;border-top:0;border-radius:0 0 8px 0}
+.cam .scan{position:absolute;left:18px;right:18px;height:2px;background:var(--green);box-shadow:0 0 14px var(--green);animation:scan 2.4s ease-in-out infinite}
+@keyframes scan{0%,100%{top:24px}50%{top:224px}}
+.tag{position:absolute;background:rgba(15,23,42,.88);border:1px solid var(--green);color:var(--text);font-size:9px;font-weight:700;padding:3px 7px;border-radius:7px}
+.modes{display:flex;gap:5px;flex-wrap:wrap}
+.modes span{background:var(--card);border-radius:999px;padding:5px 9px;font-size:9px;color:var(--muted)}
+.modes span.on{background:var(--green);color:#052e16;font-weight:700}
+/* detail */
+.dhead{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.dhead .thumb{width:54px;height:54px;border-radius:14px;background:#3b2a1a;display:grid;place-items:center;font-size:30px}
+.dhead b{font-size:13px;display:block}
+.dhead small{color:var(--muted);font-size:9.5px}
+.kcal-big{background:var(--card);border-radius:16px;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.kcal-big strong{font-size:22px;letter-spacing:-.03em}
+.portion{display:flex;align-items:center;gap:8px}
+.portion button{width:24px;height:24px;border-radius:8px;border:0;background:var(--card-2);color:var(--text);font-weight:800}
+.row{display:flex;justify-content:space-between;padding:8px 2px;border-bottom:1px solid var(--card);font-size:10.5px}
+.row span{color:var(--muted)}
+/* summary */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sbox{background:var(--card);border-radius:16px;padding:12px}
+.sbox small{color:var(--muted);font-size:9px;display:block;margin-bottom:4px}
+.sbox strong{font-size:17px;letter-spacing:-.02em}
+.sbox strong span{font-size:9px;color:var(--dim);font-weight:600}
+.water{display:flex;gap:4px;margin-top:8px}
+.water i{flex:1;height:22px;border-radius:5px;background:var(--line)}
+.water i.f{background:var(--blue)}
+/* weight */
+.wcard{background:var(--card);border-radius:18px;padding:14px;margin-bottom:8px}
+.wcard .big{display:flex;align-items:baseline;gap:6px}
+.wcard .big strong{font-size:24px;letter-spacing:-.03em}
+.wcard .big span{color:var(--green);font-weight:700;font-size:10px}
+.chart{margin-top:10px;width:100%;height:120px}
+.range{display:flex;gap:4px;margin-bottom:10px}
+.range span{flex:1;text-align:center;background:var(--card);padding:5px;border-radius:8px;font-size:9px;color:var(--muted)}
+.range span.on{background:var(--green);color:#052e16;font-weight:700}
+/* goals */
+.chat{display:flex;flex-direction:column;gap:7px}
+.bub{max-width:85%;padding:9px 11px;border-radius:14px;font-size:10px;line-height:1.45}
+.bub.ai{background:var(--card);border-bottom-left-radius:4px}
+.bub.me{background:var(--green);color:#052e16;align-self:flex-end;border-bottom-right-radius:4px;font-weight:600}
+.goal-new{background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(34,197,94,.04));border:1px solid rgba(34,197,94,.4);border-radius:14px;padding:10px;display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:4px}
+.goal-new div small{display:block;color:var(--muted);font-size:8.5px}
+.goal-new div b{font-size:12px}
+.goal-new button{grid-column:1/-1;border:0;background:var(--green);color:#052e16;font-weight:800;border-radius:9px;padding:7px;font-size:10px}
+
+/* BENEFITS */
+.bgrid{display:grid;gap:30px;text-align:center;margin-top:72px}
+.benefit .ic{width:52px;height:52px;margin:0 auto 14px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;font-size:24px}
+.benefit h3{font-size:1.05rem;margin-bottom:6px}
+.benefit p{color:var(--muted);font-size:.92rem;max-width:280px;margin:0 auto}
+
+/* STAT */
+.stat{text-align:center;position:relative;overflow:hidden}
+.stat::before{content:"";position:absolute;left:50%;top:50%;width:700px;height:400px;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(34,197,94,.14),transparent 65%);pointer-events:none}
+.stat .wrap{position:relative}
+.laurel{display:flex;align-items:center;justify-content:center;gap:18px}
+.laurel svg{width:44px;height:80px;color:var(--green);flex:none}
+.laurel svg.r{transform:scaleX(-1)}
+.statnum{font-size:clamp(3.2rem,11vw,5.5rem);font-weight:800;letter-spacing:-.05em;line-height:1}
+.statlbl{color:var(--muted);letter-spacing:.24em;font-size:.78rem;font-weight:700;text-transform:uppercase;margin-top:8px}
+.bigstars{display:flex;justify-content:center;gap:8px;margin:28px 0}
+.bigstars svg{width:42px;height:42px;color:var(--yellow);filter:drop-shadow(0 4px 12px rgba(250,204,21,.35))}
+.ratings{display:inline-flex;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);padding:10px 22px;border-radius:999px;color:var(--muted);font-size:.92rem;margin-bottom:36px}
+.ratings b{color:var(--text);margin-left:6px}
+.ratings i{width:4px;height:4px;border-radius:50%;background:var(--dim)}
+.stat .stores{justify-content:center}
+
+/* FOOTER */
+footer{background:#020617;border-top:1px solid var(--card);padding:64px 0 28px}
+.fcols{display:grid;gap:36px;grid-template-columns:1fr 1fr}
+.fbrand{grid-column:1/-1}
+.fbrand p{color:var(--muted);font-size:.9rem;margin:14px 0 18px;max-width:280px}
+.social{display:flex;gap:10px}
+.social a{width:38px;height:38px;border-radius:50%;background:var(--card);display:grid;place-items:center;color:var(--muted);transition:.2s}
+.social a:hover{color:var(--green);background:var(--card-2)}
+.social svg{width:17px;height:17px}
+.fcol h4{font-size:.9rem;margin-bottom:14px}
+.fcol a{display:block;color:var(--muted);font-size:.88rem;padding:5px 0}
+.fcol a:hover{color:var(--green)}
+.fbottom{border-top:1px solid var(--card);margin-top:48px;padding-top:24px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;color:var(--dim);font-size:.84rem}
+.fbottom a{color:var(--muted)}
+.fbottom a:hover{color:var(--green)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+
+/* BREAKPOINTS */
+@media (min-width:640px){
+  .tgrid{grid-template-columns:repeat(2,1fr)}
+  .bgrid{grid-template-columns:repeat(3,1fr)}
+  .fcols{grid-template-columns:repeat(3,1fr)}
+}
+@media (min-width:900px){
+  .nav-links,.nav-cta{display:flex}
+  .burger,.mobile-menu{display:none!important}
+  .hero{padding:80px 0 110px}
+  .hero .wrap{grid-template-columns:1.15fr .85fr}
+  .phone{width:300px;height:612px}
+  .float.f1{left:-40px}
+  .float.f2{right:-30px}
+  .steps{grid-template-columns:repeat(3,1fr);gap:26px}
+  .steps::before{content:"";position:absolute;top:50%;left:12%;right:12%;border-top:2px dashed var(--line);z-index:0}
+  .step{z-index:1}
+  .tgrid{grid-template-columns:repeat(3,1fr)}
+  .fgrid{grid-template-columns:.9fr 1.1fr;gap:72px}
+  .fcols{grid-template-columns:1.4fr repeat(3,1fr)}
+  .fbrand{grid-column:auto}
+  .fbottom{flex-direction:row;justify-content:space-between}
+}
+</style>
+</head>
+<body>
+
+<!-- SVG sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="pombo" viewBox="0 0 32 32"><path d="M5 21c0-6 5-10 11-10 2-4 7-5 9-2l3 1-3 1c0 7-5 12-12 12H3l2-2z" fill="#22c55e"/><path d="M10 18c3 0 7 1 9 4-4 1-8 0-9-4z" fill="#0f172a" opacity=".35"/><circle cx="23.6" cy="10.4" r="1.15" fill="#0f172a"/></symbol>
+  <symbol id="apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.7-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.7-4.1zM13.9 5c.7-.9 1.2-2.1 1.1-3.3-1 0-2.3.7-3 1.6-.7.8-1.3 2-1.1 3.2 1.1.1 2.3-.6 3-1.5z"/></symbol>
+  <symbol id="play" viewBox="0 0 24 24"><path fill="#34d399" d="M3.6 1.8 13.5 12l-9.9 10.2c-.4-.2-.6-.6-.6-1.1V2.9c0-.5.2-.9.6-1.1z"/><path fill="#facc15" d="m16.8 8.7-3.3 3.3 3.3 3.3 3.8-2.2c1-.6 1-1.6 0-2.2l-3.8-2.2z"/><path fill="#f87171" d="M13.5 12 3.6 22.2c.4.2.9.2 1.5-.1l11.7-6.8-3.3-3.3z"/><path fill="#60a5fa" d="M13.5 12 16.8 8.7 5.1 1.9c-.6-.3-1.1-.3-1.5-.1L13.5 12z"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path fill="currentColor" d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="#" class="logo" aria-label="Pombo AI inicio"><svg><use href="#pombo"/></svg>Pombo <b>AI</b></a>
+    <nav class="nav-links">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#funciones">Funciones</a>
+      <a href="#opiniones">Opiniones</a>
+      <a href="support.html">Soporte</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="store sm" href="#app-store"><svg><use href="#apple"/></svg><span><small>Descárgalo en</small><strong>App Store</strong></span></a>
+      <a class="store sm" href="#google-play"><svg><use href="#play"/></svg><span><small>Disponible en</small><strong>Google Play</strong></span></a>
+    </div>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mmenu">
+    <a href="#como-funciona">Cómo funciona</a>
+    <a href="#funciones">Funciones</a>
+    <a href="#opiniones">Opiniones</a>
+    <a href="support.html">Soporte</a>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="rv">
+      <span class="badge"><i></i>Disponible en iOS y Android</span>
+      <h1><span>Cuenta Calorías en Segundos</span><span>con IA: <em>Basta Una Foto</em></span></h1>
+      <p class="lead">Olvídate de apuntar cada gramo. Pombo AI analiza tu plato, calcula calorías y macros y sigue tu progreso automáticamente. Rápido, sencillo y preciso.</p>
+      <div class="stores">
+        <a class="store" href="#app-store"><svg><use href="#apple"/></svg><span><small>Descárgalo en</small><strong>App Store</strong></span></a>
+        <a class="store" href="#google-play"><svg><use href="#play"/></svg><span><small>Disponible en</small><strong>Google Play</strong></span></a>
+      </div>
+      <div class="hero-meta">
+        <div class="avatars">
+          <span style="background:#86efac">LF</span><span style="background:#fdba74">JM</span><span style="background:#93c5fd">CR</span><span style="background:#f9a8d4">AG</span>
+        </div>
+        <div><span class="stars">★★★★★</span><br>+5.000 valoraciones de 5 estrellas</div>
+      </div>
+    </div>
+
+    <div class="hero-phone rv">
+      <div class="float f1"><span class="ic">📸</span><span><b>Paella detectada</b><small>520 kcal · 2 s</small></span></div>
+      <div class="float f2"><span class="ic">🔥</span><span><b>Racha de 12 días</b><small>¡Sigue así!</small></span></div>
+      <div class="phone" aria-label="Captura de la app Pombo AI">
+        <div class="screen">
+          <div class="scr-top">
+            <span class="logo"><svg><use href="#pombo"/></svg>Pombo <b>AI</b></span>
+            <span class="streak">🔥 12</span>
+          </div>
+          <div class="days">
+            <div class="day done"><b>✓</b>L</div>
+            <div class="day done"><b>✓</b>M</div>
+            <div class="day done"><b>✓</b>X</div>
+            <div class="day today"><b>27</b>J</div>
+            <div class="day"><b>28</b>V</div>
+            <div class="day"><b>29</b>S</div>
+            <div class="day"><b>30</b>D</div>
+          </div>
+          <div class="ring-card">
+            <div class="ring">
+              <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#334155" stroke-width="9"/><circle id="heroRing" cx="50" cy="50" r="42" fill="none" stroke="#22c55e" stroke-width="9" stroke-linecap="round" stroke-dasharray="264" stroke-dashoffset="264" style="transition:stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)"/></svg>
+              <div class="num"><strong data-count="995">0</strong><small>kcal restantes</small></div>
+            </div>
+            <div class="ring-info">
+              <div><small>Objetivo</small><b>2.100 kcal</b></div>
+              <div><small>Consumidas</small><b style="color:var(--green)">1.105 kcal</b></div>
+              <div><small>Ejercicio</small><b style="color:var(--orange)">+0 kcal</b></div>
+            </div>
+          </div>
+          <div class="macros">
+            <div class="macro"><small>Proteínas</small><b>86<span>/150g</span></b><div class="bar"><i style="width:57%;background:var(--pink)"></i></div></div>
+            <div class="macro"><small>Carbos</small><b>124<span>/230g</span></b><div class="bar"><i style="width:54%;background:var(--yellow)"></i></div></div>
+            <div class="macro"><small>Grasas</small><b>31<span>/70g</span></b><div class="bar"><i style="width:44%;background:var(--blue)"></i></div></div>
+          </div>
+          <div class="sec-label">Hoy <span>Ver todo</span></div>
+          <div class="meal"><span class="thumb" style="background:#3b2a1a">🥘</span><div><b>Paella de marisco</b><small>13:42 · P 28 · C 64 · G 14</small></div><span class="kc">520</span></div>
+          <div class="meal"><span class="thumb" style="background:#1f3a2a">🥑</span><div><b>Tostada con aguacate</b><small>09:15 · P 12 · C 38 · G 17</small></div><span class="kc">385</span></div>
+          <div class="fab">+ Añadir</div>
+          <div class="tabbar"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="how" id="como-funciona">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Escáner IA</div>
+      <h2>Cómo funciona Pombo AI</h2>
+      <p>Nutrición inteligente en 3 pasos sencillos</p>
+    </div>
+    <div class="steps">
+      <div class="step rv">
+        <span class="num">01</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+        <h3>Haz una Foto</h3>
+        <p>Apunta la cámara a tu plato. Sin pesar comida ni buscar ingredientes uno a uno.</p>
+      </div>
+      <div class="step rv">
+        <span class="num">02</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h3>La IA lo Analiza al Instante</h3>
+        <p>Nuestra inteligencia artificial identifica los alimentos y estima el tamaño de la ración.</p>
+      </div>
+      <div class="step rv">
+        <span class="num">03</span>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg></div>
+        <h3>Consulta tus Macros</h3>
+        <p>Calorías, proteínas, carbohidratos y grasas, listos y guardados en tu diario.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPINIONES -->
+<section id="opiniones">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Opiniones</div>
+      <h2>Miles de personas alcanzando sus objetivos</h2>
+      <p>Mira quién ya ha transformado su alimentación con Pombo AI</p>
+    </div>
+    <div class="tgrid">
+      <article class="tcard rv">
+        <div class="tuser"><span class="av" style="background:linear-gradient(135deg,#86efac,#22c55e)">LF</span><div><b>Lucía Fernández</b><small>@luciafdz · Madrid</small></div></div>
+        <div class="stars">★★★★★</div>
+        <blockquote>"He perdido peso sin pasar hambre. El escáner me hizo entender qué estaba comiendo mal."</blockquote>
+        <span class="tresult">↓ 7 kg en 3 meses</span>
+      </article>
+      <article class="tcard rv">
+        <div class="tuser"><span class="av" style="background:linear-gradient(135deg,#fdba74,#f97316)">JM</span><div><b>Javier Moreno</b><small>@javimoreno.fit · Valencia</small></div></div>
+        <div class="stars">★★★★★</div>
+        <blockquote>"Contar calorías con solo una foto me ahorra muchísimo tiempo cada día. Por fin soy constante."</blockquote>
+        <span class="tresult">🔥 Racha de 94 días</span>
+      </article>
+      <article class="tcard rv">
+        <div class="tuser"><span class="av" style="background:linear-gradient(135deg,#93c5fd,#3b82f6)">CR</span><div><b>Carmen Ruiz</b><small>@carmenruiz_run · Sevilla</small></div></div>
+        <div class="stars">★★★★★</div>
+        <blockquote>"Entre carreras y gimnasio necesito la proteína justa. Con Pombo AI clavo mis macros sin errores."</blockquote>
+        <span class="tresult">💪 150 g proteína/día</span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FUNCIONES -->
+<section class="features" id="funciones">
+  <div class="wrap">
+    <div class="head rv">
+      <div class="eyebrow">Funciones</div>
+      <h2>Tecnología de vanguardia para tu dieta</h2>
+      <p>Todo lo que necesitas para automatizar tu nutrición</p>
+    </div>
+    <div class="fgrid">
+      <div class="rv">
+        <div class="phone" aria-live="polite">
+          <div class="screen" style="padding-top:52px">
+            <!-- 1 Escáner -->
+            <div class="fscreen on" data-screen="0">
+              <div class="scr-title">Escanear comida</div>
+              <div class="cam">
+                <span class="plate">🥗</span>
+                <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+                <i class="scan"></i>
+                <span class="tag" style="top:70px;left:40px">Pollo · 140 g</span>
+                <span class="tag" style="bottom:66px;right:34px">Quinoa · 90 g</span>
+              </div>
+              <div class="modes"><span class="on">📷 Foto</span><span>🎙️ Voz</span><span>⌨️ Texto</span><span>▥ Código</span><span>🏷️ Etiqueta</span></div>
+              <div class="meal" style="margin-top:10px"><span class="thumb" style="background:#1f3a2a">🥗</span><div><b>Ensalada de pollo y quinoa</b><small>Analizado en 1,8 s</small></div><span class="kc">462</span></div>
+            </div>
+            <!-- 2 Detalles -->
+            <div class="fscreen" data-screen="1">
+              <div class="dhead"><span class="thumb">🥘</span><div><b>Paella de marisco</b><small>Comida · 13:42</small></div></div>
+              <div class="kcal-big"><div><small style="color:var(--muted);font-size:9px">Calorías</small><br><strong>520</strong> <small style="color:var(--muted)">kcal</small></div><div class="portion"><button>−</button><b>1,0</b><button>+</button></div></div>
+              <div class="macros">
+                <div class="macro"><small>Proteínas</small><b>28g</b></div>
+                <div class="macro"><small>Carbos</small><b>64g</b></div>
+                <div class="macro"><small>Grasas</small><b>14g</b></div>
+              </div>
+              <div class="row"><span>Fibra</span><b>3,2 g</b></div>
+              <div class="row"><span>Azúcares</span><b>2,1 g</b></div>
+              <div class="row"><span>Sodio</span><b>890 mg</b></div>
+              <div class="row"><span>Hierro</span><b>3,4 mg</b></div>
+              <div class="row"><span>Vitamina C</span><b>12 mg</b></div>
+            </div>
+            <!-- 3 Resumen -->
+            <div class="fscreen" data-screen="2">
+              <div class="scr-title">Resumen del día</div>
+              <div class="sgrid">
+                <div class="sbox" style="grid-column:1/-1"><small>Calorías</small><strong>1.105 <span>/ 2.100 kcal</span></strong><div class="bar"><i style="width:53%;background:var(--green)"></i></div></div>
+                <div class="sbox"><small>Proteínas</small><strong>86<span> g</span></strong><div class="bar"><i style="width:57%;background:var(--pink)"></i></div></div>
+                <div class="sbox"><small>Carbos</small><strong>124<span> g</span></strong><div class="bar"><i style="width:54%;background:var(--yellow)"></i></div></div>
+                <div class="sbox"><small>Grasas</small><strong>31<span> g</span></strong><div class="bar"><i style="width:44%;background:var(--blue)"></i></div></div>
+                <div class="sbox"><small>Pasos</small><strong>8.240</strong><div class="bar"><i style="width:82%;background:var(--orange)"></i></div></div>
+                <div class="sbox" style="grid-column:1/-1"><small>Agua · 1,5 / 2,5 L</small><div class="water"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i></div></div>
+              </div>
+            </div>
+            <!-- 4 Peso -->
+            <div class="fscreen" data-screen="3">
+              <div class="scr-title">Evolución de peso</div>
+              <div class="range"><span>1S</span><span>1M</span><span class="on">3M</span><span>1A</span></div>
+              <div class="wcard">
+                <small style="color:var(--muted);font-size:9px">Peso actual</small>
+                <div class="big"><strong>71,4 kg</strong><span>↓ 4,6 kg</span></div>
+                <svg class="chart" viewBox="0 0 220 120" preserveAspectRatio="none">
+                  <defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#22c55e" stop-opacity=".35"/><stop offset="1" stop-color="#22c55e" stop-opacity="0"/></linearGradient></defs>
+                  <g stroke="#334155" stroke-width=".6"><line x1="0" y1="30" x2="220" y2="30"/><line x1="0" y1="60" x2="220" y2="60"/><line x1="0" y1="90" x2="220" y2="90"/></g>
+                  <path d="M0 18 L20 22 L40 20 L60 34 L80 38 L100 46 L120 50 L140 62 L160 66 L180 78 L200 84 L220 92 L220 120 L0 120Z" fill="url(#wg)"/>
+                  <path d="M0 18 L20 22 L40 20 L60 34 L80 38 L100 46 L120 50 L140 62 L160 66 L180 78 L200 84 L220 92" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linejoin="round"/>
+                  <circle cx="220" cy="92" r="4" fill="#22c55e" stroke="#0b1222" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="sgrid">
+                <div class="sbox"><small>Inicio</small><strong>76,0<span> kg</span></strong></div>
+                <div class="sbox"><small>Objetivo</small><strong>68,0<span> kg</span></strong></div>
+              </div>
+            </div>
+            <!-- 5 Metas IA -->
+            <div class="fscreen" data-screen="4">
+              <div class="scr-title">Ajuste de metas</div>
+              <div class="chat">
+                <div class="bub ai">Esta semana has bajado 0,6 kg y tu proteína media fue de 98 g. 💪</div>
+                <div class="bub me">Quiero ganar músculo sin subir grasa</div>
+                <div class="bub ai">Perfecto. Te propongo un ligero superávit con más proteína:</div>
+                <div class="goal-new">
+                  <div><small>Calorías</small><b>2.250 kcal</b></div>
+                  <div><small>Proteínas</small><b>160 g</b></div>
+                  <div><small>Carbos</small><b>250 g</b></div>
+                  <div><small>Grasas</small><b>70 g</b></div>
+                  <button>Aplicar nuevas metas</button>
+                </div>
+              </div>
+            </div>
+            <div class="tabbar"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flist rv" role="tablist">
+        <button class="fitem active" data-target="0" role="tab" aria-selected="true">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 12h10"/></svg></span>
+          <span><h3>Escáner de Alimentos con IA</h3><p>Registra con foto, voz, texto, código de barras o etiqueta nutricional. La IA reconoce y calcula todo.</p></span>
+        </button>
+        <button class="fitem" data-target="1" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg></span>
+          <span><h3>Detalles nutricionales</h3><p>Edita raciones, consulta micronutrientes y ajusta cada comida con facilidad.</p></span>
+        </button>
+        <button class="fitem" data-target="2" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+          <span><h3>Resumen del Día</h3><p>Sigue tus metas de calorías, proteínas e hidratación en tiempo real.</p></span>
+        </button>
+        <button class="fitem" data-target="3" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18M7 15l4-4 3 3 6-7"/></svg></span>
+          <span><h3>Gráfico de Peso</h3><p>Visualiza tu progreso de peso, calorías y macros a lo largo del tiempo.</p></span>
+        </button>
+        <button class="fitem" data-target="4" role="tab" aria-selected="false">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9z"/></svg></span>
+          <span><h3>Ajuste de Metas con IA</h3><p>La IA revisa tu semana y adapta calorías y macros a tu objetivo: perder, mantener o ganar.</p></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="bgrid">
+      <div class="benefit rv"><div class="ic">⏱️</div><h3>Ahorra Tiempo</h3><p>Deja de teclear. Pombo AI registra tu dieta por ti en segundos.</p></div>
+      <div class="benefit rv"><div class="ic">🍎</div><h3>Seguimiento Completo</h3><p>Macros, agua, peso y actividad física en un solo lugar.</p></div>
+      <div class="benefit rv"><div class="ic">🎯</div><h3>Enfocado en Resultados</h3><p>Deja las cuentas para nosotros y céntrate en perder, mantener o ganar peso.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT -->
+<section class="stat">
+  <div class="wrap rv">
+    <div class="laurel">
+      <svg viewBox="0 0 44 80" fill="currentColor"><path d="M34 76C14 66 6 46 12 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="9" cy="24" rx="4" ry="8" transform="rotate(-20 9 24)"/><ellipse cx="7" cy="38" rx="4" ry="8" transform="rotate(-40 7 38)"/><ellipse cx="10" cy="52" rx="4" ry="8" transform="rotate(-60 10 52)"/><ellipse cx="18" cy="64" rx="4" ry="8" transform="rotate(-75 18 64)"/><ellipse cx="18" cy="16" rx="3.5" ry="7" transform="rotate(25 18 16)"/></svg>
+      <div>
+        <div class="statnum"><span data-count="5000" data-format="es">0</span>+</div>
+        <div class="statlbl">Valoraciones 5 estrellas</div>
+      </div>
+      <svg class="r" viewBox="0 0 44 80" fill="currentColor"><path d="M34 76C14 66 6 46 12 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/><ellipse cx="9" cy="24" rx="4" ry="8" transform="rotate(-20 9 24)"/><ellipse cx="7" cy="38" rx="4" ry="8" transform="rotate(-40 7 38)"/><ellipse cx="10" cy="52" rx="4" ry="8" transform="rotate(-60 10 52)"/><ellipse cx="18" cy="64" rx="4" ry="8" transform="rotate(-75 18 64)"/><ellipse cx="18" cy="16" rx="3.5" ry="7" transform="rotate(25 18 16)"/></svg>
+    </div>
+    <div class="bigstars" aria-label="5 estrellas">
+      <svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg><svg><use href="#star"/></svg>
+    </div>
+    <div class="ratings"><span>App Store<b>4,9</b></span><i></i><span>Google Play<b>4,8</b></span></div>
+    <div class="stores">
+      <a class="store" href="#app-store"><svg><use href="#apple"/></svg><span><small>Descárgalo en</small><strong>App Store</strong></span></a>
+      <a class="store" href="#google-play"><svg><use href="#play"/></svg><span><small>Disponible en</small><strong>Google Play</strong></span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fcols">
+      <div class="fbrand">
+        <a href="#" class="logo"><svg><use href="#pombo"/></svg>Pombo <b>AI</b></a>
+        <p>El contador de calorías con IA que cabe en tu bolsillo. Tu nutricionista de confianza, siempre contigo.</p>
+        <div class="social">
+          <a href="#instagram" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor"/></svg></a>
+          <a href="#tiktok" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.1v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.7a5.7 5.7 0 1 0 4.9 5.7V9a7.4 7.4 0 0 0 4.4 1.4V7.3a4.3 4.3 0 0 1-3.3-1.5z"/></svg></a>
+        </div>
+      </div>
+      <div class="fcol">
+        <h4>Herramientas</h4>
+        <a href="#calculadora-calorias">Calculadora de Calorías</a>
+        <a href="#calculadora-macros">Calculadora de Macros</a>
+        <a href="#calculadora-proteina">Calculadora de Proteína</a>
+      </div>
+      <div class="fcol">
+        <h4>Funciones</h4>
+        <a href="#funciones">Escáner IA</a>
+        <a href="#funciones">Diario Alimentario</a>
+        <a href="#funciones">Gráfico de Evolución</a>
+        <a href="#funciones">Contador de Agua</a>
+      </div>
+      <div class="fcol">
+        <h4>Enlaces útiles</h4>
+        <a href="support.html">Soporte</a>
+        <a href="#privacidad">Privacidad</a>
+        <a href="#terminos">Términos</a>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>© <span id="year">2026</span> Pombo AI. Todos los derechos reservados.</span>
+      <a href="mailto:suporte@pomboai.app">suporte@pomboai.app</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Menú móvil
+  var b=document.getElementById('burger'),m=document.getElementById('mmenu');
+  b.addEventListener('click',function(){var o=m.classList.toggle('open');b.setAttribute('aria-expanded',o)});
+  m.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){m.classList.remove('open');b.setAttribute('aria-expanded',false)})});
+
+  document.getElementById('year').textContent=new Date().getFullYear();
+
+  // Contadores
+  function count(el){
+    var end=+el.dataset.count,es=el.dataset.format==='es',t0=null,dur=1600;
+    function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/dur,1),v=Math.round(end*(1-Math.pow(1-p,3)));
+      el.textContent=es?v.toLocaleString('es-ES'):v;if(p<1)requestAnimationFrame(step)}
+    requestAnimationFrame(step);
+  }
+
+  // Reveal + triggers
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(!e.isIntersecting)return;
+    e.target.classList.add('in');
+    e.target.querySelectorAll('[data-count]').forEach(function(c){if(!c.dataset.done){c.dataset.done=1;count(c)}});
+    var r=e.target.querySelector('#heroRing');if(r)r.style.strokeDashoffset=264*(995/2100);
+    io.unobserve(e.target);
+  })},{threshold:.15});
+  document.querySelectorAll('.rv').forEach(function(el,i){el.style.transitionDelay=(i%3)*80+'ms';io.observe(el)});
+
+  // Funciones: cambio de pantalla
+  var items=document.querySelectorAll('.fitem'),screens=document.querySelectorAll('.fscreen'),cur=0,timer;
+  function show(i){cur=i;items.forEach(function(it,k){it.classList.toggle('active',k===i);it.setAttribute('aria-selected',k===i)});
+    screens.forEach(function(s,k){s.classList.toggle('on',k===i)})}
+  function auto(){clearInterval(timer);timer=setInterval(function(){show((cur+1)%items.length)},4500)}
+  items.forEach(function(it){it.addEventListener('click',function(){show(+it.dataset.target);auto()})});
+  var fsec=document.getElementById('funciones');
+  new IntersectionObserver(function(es){es.forEach(function(e){e.isIntersecting?auto():clearInterval(timer)})},{threshold:.3}).observe(fsec);
+})();
+</script>
+</body>
+</html>

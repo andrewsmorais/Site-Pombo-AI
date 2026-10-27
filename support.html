@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soporte · Pombo AI</title>
+<meta name="description" content="Centro de ayuda de Pombo AI. Preguntas frecuentes y contacto con el equipo de soporte.">
+<meta name="theme-color" content="#0f172a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f172a'/%3E%3Cpath d='M5 21c0-6 5-10 11-10 2-4 7-5 9-2l3 1-3 1c0 7-5 12-12 12H3l2-2z' fill='%2322c55e'/%3E%3C/svg%3E">
+<style>
+:root{--green:#22c55e;--green-soft:rgba(34,197,94,.12);--bg:#0f172a;--bg-2:#0b1222;--card:#1e293b;--card-2:#263347;--line:#334155;--text:#f1f5f9;--muted:#94a3b8;--dim:#64748b}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{width:100%;max-width:880px;margin:0 auto;padding:0 20px}
+.nav{position:sticky;top:0;z-index:50;background:rgba(15,23,42,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(51,65,85,.6)}
+.nav .wrap{max-width:1160px;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.2rem;letter-spacing:-.02em}
+.logo svg{width:30px;height:30px}
+.logo b{color:var(--green)}
+.back{font-size:.9rem;color:var(--muted);display:flex;align-items:center;gap:6px}
+.back:hover{color:var(--green)}
+
+.hero{text-align:center;padding:64px 0 40px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;left:50%;top:0;width:600px;height:360px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(34,197,94,.16),transparent 65%);pointer-events:none}
+.hero .ic{width:64px;height:64px;border-radius:18px;background:var(--green-soft);border:1px solid rgba(34,197,94,.3);display:grid;place-items:center;margin:0 auto 20px;color:var(--green);position:relative}
+.hero h1{font-size:clamp(2rem,6vw,3rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:12px;position:relative}
+.hero p{color:var(--muted);max-width:520px;margin:0 auto;position:relative}
+
+.cards{display:grid;gap:14px;margin-bottom:56px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;gap:14px;align-items:flex-start;transition:border-color .2s,transform .2s}
+.card:hover{border-color:rgba(34,197,94,.5);transform:translateY(-2px)}
+.card .i{width:42px;height:42px;border-radius:12px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;flex:none;font-size:20px}
+.card h3{font-size:1rem;margin-bottom:3px}
+.card p{color:var(--muted);font-size:.9rem}
+.card .link{color:var(--green);font-weight:700;font-size:.9rem;display:inline-block;margin-top:6px;word-break:break-all}
+
+h2{font-size:1.5rem;letter-spacing:-.02em;margin-bottom:18px}
+.faq{display:flex;flex-direction:column;gap:10px;margin-bottom:64px}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+details[open]{border-color:rgba(34,197,94,.45)}
+summary{cursor:pointer;list-style:none;padding:18px 52px 18px 20px;font-weight:600;position:relative}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:8px;background:var(--card-2);display:grid;place-items:center;color:var(--green);font-size:1.1rem;transition:transform .2s}
+details[open] summary::after{content:"−"}
+details .a{padding:0 20px 18px;color:var(--muted);font-size:.95rem}
+details .a p+p{margin-top:8px}
+
+.contact{background:linear-gradient(135deg,rgba(34,197,94,.14),rgba(30,41,59,.6));border:1px solid rgba(34,197,94,.35);border-radius:22px;padding:32px 24px;text-align:center;margin-bottom:72px}
+.contact h2{margin-bottom:8px}
+.contact p{color:var(--muted);margin-bottom:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#052e16;font-weight:800;padding:13px 24px;border-radius:12px;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(34,197,94,.35)}
+.contact small{display:block;color:var(--dim);margin-top:14px;font-size:.84rem}
+
+footer{background:#020617;border-top:1px solid var(--card);padding:28px 0}
+footer .wrap{max-width:1160px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center;color:var(--dim);font-size:.84rem}
+footer nav{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--green)}
+
+@media (min-width:640px){.cards{grid-template-columns:repeat(3,1fr)}.card{flex-direction:column}}
+@media (min-width:900px){footer .wrap{flex-direction:row;justify-content:space-between}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="pombo" viewBox="0 0 32 32"><path d="M5 21c0-6 5-10 11-10 2-4 7-5 9-2l3 1-3 1c0 7-5 12-12 12H3l2-2z" fill="#22c55e"/><path d="M10 18c3 0 7 1 9 4-4 1-8 0-9-4z" fill="#0f172a" opacity=".35"/><circle cx="23.6" cy="10.4" r="1.15" fill="#0f172a"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a href="index.html" class="logo" aria-label="Pombo AI inicio"><svg><use href="#pombo"/></svg>Pombo <b>AI</b></a>
+    <a href="index.html" class="back">← Volver al inicio</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></div>
+      <h1>¿En qué podemos ayudarte?</h1>
+      <p>Encuentra respuestas rápidas a las dudas más comunes o escríbenos directamente. Respondemos en menos de 48 horas laborables.</p>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="cards">
+      <a class="card" href="mailto:suporte@pomboai.app">
+        <span class="i">✉️</span>
+        <div><h3>Escríbenos</h3><p>Para cualquier duda o incidencia.</p><span class="link">suporte@pomboai.app</span></div>
+      </a>
+      <a class="card" href="#suscripcion">
+        <span class="i">💳</span>
+        <div><h3>Suscripción</h3><p>Pagos, cancelación y reembolsos.</p><span class="link">Ver respuestas →</span></div>
+      </a>
+      <a class="card" href="#cuenta">
+        <span class="i">🔒</span>
+        <div><h3>Cuenta y datos</h3><p>Privacidad y eliminación de cuenta.</p><span class="link">Ver respuestas →</span></div>
+      </a>
+    </div>
+
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq">
+      <details>
+        <summary>¿Cómo funciona el escáner de comida con IA?</summary>
+        <div class="a"><p>Haz una foto a tu plato desde la app. La IA identifica los alimentos, estima el tamaño de cada ración y calcula calorías, proteínas, carbohidratos y grasas en pocos segundos.</p><p>También puedes registrar comidas por voz, texto, código de barras o escaneando la etiqueta nutricional.</p></div>
+      </details>
+      <details>
+        <summary>¿Qué precisión tienen las estimaciones?</summary>
+        <div class="a"><p>Las estimaciones son una aproximación basada en la imagen y en bases de datos nutricionales. Para mayor precisión, puedes ajustar la ración o editar los ingredientes después del escaneo. Pombo AI no sustituye el consejo de un profesional sanitario.</p></div>
+      </details>
+      <details>
+        <summary>¿Cómo se calculan mis objetivos de calorías y macros?</summary>
+        <div class="a"><p>Al configurar tu perfil, calculamos tus necesidades según tu edad, altura, peso, nivel de actividad y objetivo. La función de Ajuste de Metas con IA revisa tu progreso semanal y te propone cambios, que siempre puedes aceptar o editar manualmente.</p></div>
+      </details>
+      <details id="suscripcion">
+        <summary>¿Cómo cancelo mi suscripción?</summary>
+        <div class="a"><p><strong>iPhone:</strong> Ajustes → tu nombre → Suscripciones → Pombo AI → Cancelar suscripción.</p><p><strong>Android:</strong> Google Play Store → tu perfil → Pagos y suscripciones → Suscripciones → Pombo AI → Cancelar.</p><p>Desinstalar la app no cancela la suscripción.</p></div>
+      </details>
+      <details>
+        <summary>¿Puedo pedir un reembolso?</summary>
+        <div class="a"><p>Los pagos se procesan a través de Apple o Google, por lo que los reembolsos se solicitan directamente a ellos: en <em>reportaproblem.apple.com</em> para iOS o desde tu historial de pedidos de Google Play para Android.</p></div>
+      </details>
+      <details>
+        <summary>He cambiado de móvil, ¿cómo recupero mis datos?</summary>
+        <div class="a"><p>Inicia sesión con la misma cuenta que usabas (Apple, Google o email). Tu historial, metas y registros se sincronizan automáticamente. Si tenías suscripción, pulsa «Restaurar compras» en Ajustes.</p></div>
+      </details>
+      <details>
+        <summary>¿Se sincroniza con Apple Salud o Health Connect?</summary>
+        <div class="a"><p>Sí. Desde Ajustes → Integraciones puedes conectar Apple Salud (iOS) o Health Connect (Android) para importar pasos, actividad y peso.</p></div>
+      </details>
+      <details id="cuenta">
+        <summary>¿Cómo elimino mi cuenta y mis datos?</summary>
+        <div class="a"><p>Ve a Ajustes → Cuenta → Eliminar cuenta. Se borrarán de forma permanente todos tus datos. También puedes solicitarlo escribiendo a <a href="mailto:suporte@pomboai.app" style="color:var(--green)">suporte@pomboai.app</a> desde el email asociado a tu cuenta.</p></div>
+      </details>
+      <details>
+        <summary>¿Qué hacéis con mis fotos?</summary>
+        <div class="a"><p>Las fotos se utilizan únicamente para analizar tu comida. No las vendemos ni las compartimos con terceros con fines publicitarios. Consulta nuestra <a href="index.html#privacidad" style="color:var(--green)">Política de Privacidad</a> para más detalles.</p></div>
+      </details>
+    </div>
+
+    <div class="contact">
+      <h2>¿No encuentras lo que buscas?</h2>
+      <p>Cuéntanos qué ocurre e incluye el modelo de tu móvil y la versión de la app.</p>
+      <a class="btn" href="mailto:suporte@pomboai.app?subject=Soporte%20Pombo%20AI">✉️ Contactar con soporte</a>
+      <small>suporte@pomboai.app · Respuesta en menos de 48 h laborables</small>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Pombo AI. Todos los derechos reservados.</span>
+    <nav><a href="index.html">Inicio</a><a href="index.html#privacidad">Privacidad</a><a href="index.html#terminos">Términos</a><a href="mailto:suporte@pomboai.app">suporte@pomboai.app</a></nav>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+// Abre la pregunta si se llega con #ancla
+(function(){var h=location.hash&&document.querySelector(location.hash);if(h&&h.tagName==='DETAILS')h.open=true;
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(){var t=document.querySelector(a.getAttribute('href'));if(t&&t.tagName==='DETAILS')t.open=true})})})();
+</script>
+</body>
+</html>
